@@ -1,0 +1,84 @@
+# ============================================
+# K8s PredictScale - Local Development Stack
+# ============================================
+
+version: '3.8'
+
+services:
+  # ---- PredictScale Application ----
+  predictscale:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: predictscale-app
+    ports:
+      - "8000:8000"
+    environment:
+      - PROMETHEUS_URL=http://prometheus:9090
+      - LOG_LEVEL=DEBUG
+      - DRY_RUN=true
+      - PREDICTION_INTERVAL=60
+      - MODEL_PATH=/app/models
+    volumes:
+      - ./src:/app/src
+      - ./models:/app/models
+      - ./config:/app/config
+    depends_on:
+      - prometheus
+    networks:
+      - predictscale-net
+    restart: unless-stopped
+
+  # ---- Prometheus ----
+  prometheus:
+    image: prom/prometheus:v2.50.0
+    container_name: predictscale-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+    networks:
+      - predictscale-net
+    restart: unless-stopped
+
+  # ---- Grafana ----
+  grafana:
+    image: grafana/grafana:10.3.1
+    container_name: predictscale-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=predictscale
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - ./config/grafana:/etc/grafana/provisioning
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - predictscale-net
+    restart: unless-stopped
+
+  # ---- Sample Target Application ----
+  sample-app:
+    image: nginx:alpine
+    container_name: predictscale-sample-app
+    ports:
+      - "8080:80"
+    networks:
+      - predictscale-net
+    restart: unless-stopped
+
+volumes:
+  prometheus-data:
+  grafana-data:
+
+networks:
+  predictscale-net:
+    driver: bridge
