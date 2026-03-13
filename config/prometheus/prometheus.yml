@@ -1,0 +1,27 @@
+# ============================================
+# K8s PredictScale - Prometheus Configuration
+# ============================================
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - "rules.yml"
+
+scrape_configs:
+  # Self-monitoring
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # PredictScale application metrics
+  - job_name: "predictscale"
+    static_configs:
+      - targets: ["predictscale:8000"]
+    metrics_path: "/api/v1/metrics"
+
+  # Sample target application
+  - job_name: "sample-app"
+    static_configs:
+      - targets: ["sample-app:80"]

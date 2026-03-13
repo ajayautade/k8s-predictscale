@@ -1,0 +1,45 @@
+# ============================================
+# K8s PredictScale - Prometheus Alert Rules
+# ============================================
+
+groups:
+  - name: predictscale_alerts
+    rules:
+      # Alert when prediction confidence drops
+      - alert: LowPredictionConfidence
+        expr: predictscale_prediction_confidence < 0.5
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low prediction confidence detected"
+          description: "Prediction confidence has been below 50% for 10 minutes. Model may need retraining."
+
+      # Alert when prediction error is high
+      - alert: HighPredictionError
+        expr: predictscale_prediction_mae > 0.2
+        for: 15m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High prediction error"
+          description: "Mean Absolute Error exceeds 20%. The prediction model accuracy has degraded."
+
+      # Alert when scaling events are frequent
+      - alert: FrequentScaling
+        expr: rate(predictscale_scaling_events_total[10m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Frequent scaling events detected"
+          description: "More than 1 scaling event per 10 minutes. Possible oscillation."
+
+      # Alert when model hasn't been retrained
+      - alert: StaleModel
+        expr: (time() - predictscale_model_last_trained_timestamp) > 172800
+        labels:
+          severity: warning
+        annotations:
+          summary: "Model is stale"
+          description: "The prediction model hasn't been retrained in over 48 hours."
