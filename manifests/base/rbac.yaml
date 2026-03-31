@@ -1,0 +1,29 @@
+# ClusterRole: allows PredictScale to read deployments and
+# patch their scale sub-resource.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: predictscale-scaler
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources: ["deployments/scale"]
+    verbs: ["get", "update", "patch"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: predictscale-scaler-binding
+subjects:
+  - kind: ServiceAccount
+    name: predictscale
+    namespace: predictscale
+roleRef:
+  kind: ClusterRole
+  name: predictscale-scaler
+  apiGroup: rbac.authorization.k8s.io

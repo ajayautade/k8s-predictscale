@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: predictscale-config
+  namespace: predictscale
+data:
+  PROMETHEUS_URL: "http://prometheus-kube-prometheus-prometheus.monitoring:9090"
+  PROMETHEUS_SCRAPE_INTERVAL: "15"
+  PREDICTION_INTERVAL: "60"
+  PREDICTION_HORIZON: "10"
+  MODEL_PATH: "/app/models"
+  MIN_TRAINING_DATA_HOURS: "72"
+  DRY_RUN: "true"
+  TARGET_NAMESPACE: "default"
+  TARGET_DEPLOYMENT: "sample-app"
+  MIN_REPLICAS: "2"
+  MAX_REPLICAS: "50"
+  SCALE_UP_RATE: "5"
+  SCALE_DOWN_RATE: "2"
+  COOLDOWN_PERIOD: "120"
+  CONFIDENCE_THRESHOLD: "0.7"
+  API_HOST: "0.0.0.0"
+  API_PORT: "8000"
+  LOG_LEVEL: "INFO"
+  ALERT_ENABLED: "false"
