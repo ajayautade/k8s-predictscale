@@ -1,0 +1,65 @@
+# Default values for predictscale Helm chart
+
+replicaCount: 1
+
+image:
+  repository: k8s-predictscale
+  tag: latest
+  pullPolicy: IfNotPresent
+
+serviceAccount:
+  create: true
+  name: predictscale
+
+rbac:
+  create: true
+
+service:
+  type: ClusterIP
+  port: 8000
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 2Gi
+
+config:
+  prometheusUrl: "http://prometheus-kube-prometheus-prometheus.monitoring:9090"
+  scrapeInterval: "15"
+  predictionInterval: "60"
+  predictionHorizon: "10"
+  modelPath: "/app/models"
+  minTrainingHours: "72"
+  dryRun: "true"
+  targetNamespace: "default"
+  targetDeployment: "sample-app"
+  minReplicas: "2"
+  maxReplicas: "50"
+  scaleUpRate: "5"
+  scaleDownRate: "2"
+  cooldownPeriod: "120"
+  confidenceThreshold: "0.7"
+  logLevel: "INFO"
+  alertEnabled: "false"
+  slackWebhookUrl: ""
+
+probes:
+  liveness:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+  readiness:
+    initialDelaySeconds: 15
+    periodSeconds: 10
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

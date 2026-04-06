@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "predictscale.fullname" . }}-config
+  labels:
+    {{- include "predictscale.labels" . | nindent 4 }}
+data:
+  PROMETHEUS_URL: {{ .Values.config.prometheusUrl | quote }}
+  PROMETHEUS_SCRAPE_INTERVAL: {{ .Values.config.scrapeInterval | quote }}
+  PREDICTION_INTERVAL: {{ .Values.config.predictionInterval | quote }}
+  PREDICTION_HORIZON: {{ .Values.config.predictionHorizon | quote }}
+  MODEL_PATH: {{ .Values.config.modelPath | quote }}
+  MIN_TRAINING_DATA_HOURS: {{ .Values.config.minTrainingHours | quote }}
+  DRY_RUN: {{ .Values.config.dryRun | quote }}
+  TARGET_NAMESPACE: {{ .Values.config.targetNamespace | quote }}
+  TARGET_DEPLOYMENT: {{ .Values.config.targetDeployment | quote }}
+  MIN_REPLICAS: {{ .Values.config.minReplicas | quote }}
+  MAX_REPLICAS: {{ .Values.config.maxReplicas | quote }}
+  SCALE_UP_RATE: {{ .Values.config.scaleUpRate | quote }}
+  SCALE_DOWN_RATE: {{ .Values.config.scaleDownRate | quote }}
+  COOLDOWN_PERIOD: {{ .Values.config.cooldownPeriod | quote }}
+  CONFIDENCE_THRESHOLD: {{ .Values.config.confidenceThreshold | quote }}
+  LOG_LEVEL: {{ .Values.config.logLevel | quote }}
+  ALERT_ENABLED: {{ .Values.config.alertEnabled | quote }}

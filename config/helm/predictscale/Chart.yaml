@@ -1,0 +1,14 @@
+apiVersion: v2
+name: predictscale
+description: AI-Powered Predictive Auto-Scaler for Kubernetes
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+keywords:
+  - kubernetes
+  - autoscaler
+  - aiops
+  - machine-learning
+  - predictive-scaling
+maintainers:
+  - name: K8s PredictScale Team
