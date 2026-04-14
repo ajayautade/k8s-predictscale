@@ -663,46 +663,50 @@ k8s-predictscale/
 - AWS CLI (configured)
 - Terraform 1.5+
 
-### Local Development
+### Option 1: Local Docker Compose (Testing & Development)
 
 ```bash
 # Clone the repository
 git clone https://github.com/<your-username>/k8s-predictscale.git
 cd k8s-predictscale
 
+# This boots up Prometheus, Grafana, a dummy NGINX deployment, and the core PredictScale AI engine
+make docker-up
+
+# Now watch the AI engine detect baselines and start scaling!
+make docker-logs
+```
+
+### Option 2: Actual Kubernetes Cluster (Production/Staging)
+
+If you deploy the `terraform/` templates to AWS to spin up your EKS cluster, you simply deploy the engine onto the cluster:
+
+```bash
+# Deploys the application with your production thresholds and topologies
+kubectl apply -k manifests/overlays/prod
+
+# Or via Helm
+helm install predictscale ./config/helm/predictscale --namespace predictscale --create-namespace
+```
+
+### Option 3: Simulating Traffic & Testing Models
+
+Powerful utility scripts are available to test the AI outside of a live cluster. Once you're on a machine with Python dependencies installed, you can train and validate the algorithms manually:
+
+```bash
 # Set up Python environment
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 
-# Start local infrastructure
-docker-compose up -d
+# Generate 14 days of realistic website traffic / server load
+python3 scripts/generate_synthetic_data.py --hours 336 --output data.csv
 
-# Run the application
-python -m src.api.main
+# Train the LSTM/Prophet algorithms locally on that data to tune weights
+python3 scripts/train_model.py --data data.csv
 
-# Run tests
-make test
-```
-
-### Deploy to AWS
-
-```bash
-# Provision infrastructure
-cd terraform/environments/dev
-terraform init
-terraform plan
-terraform apply
-
-# Deploy application
-kubectl apply -k manifests/overlays/dev/
-
-# Or via ArgoCD
-argocd app create predictscale \
-  --repo https://github.com/<your-username>/k8s-predictscale.git \
-  --path manifests/overlays/dev \
-  --dest-server https://kubernetes.default.svc \
-  --dest-namespace predictscale
+# Run the live scaling API stressor against an active URL
+python3 scripts/load_test.py --mode spike --url http://localhost:8080
 ```
 
 ---
