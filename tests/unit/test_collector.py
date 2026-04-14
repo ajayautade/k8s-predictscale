@@ -2,13 +2,10 @@
 # K8s PredictScale - Collector Unit Tests
 # ============================================
 
-from unittest.mock import MagicMock, patch
 
-import pandas as pd
 import pytest
 
 from src.collector.metric_registry import (
-    DEFAULT_METRICS,
     MetricCategory,
     MetricDefinition,
     MetricRegistry,

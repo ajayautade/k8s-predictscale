@@ -6,7 +6,7 @@
 # suitable for neural-network consumption.
 # ============================================
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 import numpy as np
 import pandas as pd
@@ -114,9 +114,7 @@ class Normalizer:
         result[self._feature_names] = original
         return result
 
-    def inverse_transform_column(
-        self, values: np.ndarray, column_name: str
-    ) -> np.ndarray:
+    def inverse_transform_column(self, values: np.ndarray, column_name: str) -> np.ndarray:
         """Inverse-transform a single column's values.
 
         Constructs a dummy array with all- zero columns except the one

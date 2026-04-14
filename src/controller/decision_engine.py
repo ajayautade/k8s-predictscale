@@ -10,7 +10,7 @@ import math
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict
 
 from src.utils.logger import get_logger
 
@@ -126,7 +126,11 @@ class DecisionEngine:
             )
 
         # -- Compute target replicas ------------------------------------
-        raw_target = math.ceil(predicted_peak / self._target_util) if self._target_util > 0 else current_replicas
+        raw_target = (
+            math.ceil(predicted_peak / self._target_util)
+            if self._target_util > 0
+            else current_replicas
+        )
         clamped = max(self._min, min(self._max, raw_target))
 
         # -- Dead-band check --------------------------------------------

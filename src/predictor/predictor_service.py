@@ -7,8 +7,7 @@
 # ============================================
 
 import math
-from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 import numpy as np
 import pandas as pd
@@ -80,7 +79,7 @@ class PredictorService:
 
         # Track how many hours of data we have
         if not historical_data.empty:
-            span = (historical_data.index.max() - historical_data.index.min())
+            span = historical_data.index.max() - historical_data.index.min()
             self._training_data_hours = span.total_seconds() / 3600
 
         # ---- LSTM ----
@@ -96,7 +95,10 @@ class PredictorService:
                 self._lstm._n_features = X.shape[2]
                 self._lstm.build()
                 lstm_history = self._lstm.train(
-                    X_train, y_train, X_val, y_val,
+                    X_train,
+                    y_train,
+                    X_val,
+                    y_val,
                     epochs=self._pred_cfg.epochs,
                     batch_size=self._pred_cfg.batch_size,
                 )
@@ -194,8 +196,12 @@ class PredictorService:
         # ---- Compute recommended replicas ----
         peak_predicted = float(np.max(result.predicted_values))
         target_utilization = self._scale_cfg.target_cpu_utilization
-        recommended = math.ceil(peak_predicted / target_utilization) if target_utilization > 0 else 1
-        recommended = max(self._scale_cfg.min_replicas, min(self._scale_cfg.max_replicas, recommended))
+        recommended = (
+            math.ceil(peak_predicted / target_utilization) if target_utilization > 0 else 1
+        )
+        recommended = max(
+            self._scale_cfg.min_replicas, min(self._scale_cfg.max_replicas, recommended)
+        )
         result.recommended_replicas = recommended
 
         # ---- Urgency ----

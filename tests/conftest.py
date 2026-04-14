@@ -25,7 +25,9 @@ def sample_metrics_df():
         {
             "cpu_usage": base_cpu + noise,
             "memory_usage": 500e6 + np.random.normal(0, 20e6, n),
-            "request_rate": 100 + 30 * np.sin(np.linspace(0, 4 * np.pi, n)) + np.random.normal(0, 5, n),
+            "request_rate": 100
+            + 30 * np.sin(np.linspace(0, 4 * np.pi, n))
+            + np.random.normal(0, 5, n),
             "response_latency_p99": 0.05 + np.random.exponential(0.01, n),
             "error_rate": np.random.poisson(0.5, n).astype(float),
             "ready_replicas": np.full(n, 3.0),

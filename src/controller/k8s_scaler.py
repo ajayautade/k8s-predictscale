@@ -12,7 +12,8 @@ from src.utils.logger import get_logger
 logger = get_logger(__name__)
 
 try:
-    from kubernetes import client, config as k8s_config
+    from kubernetes import client
+    from kubernetes import config as k8s_config
 except ImportError:  # pragma: no cover
     client = None  # type: ignore[assignment]
     k8s_config = None  # type: ignore[assignment]

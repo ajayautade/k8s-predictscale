@@ -8,7 +8,7 @@
 
 import os
 import pickle
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 import numpy as np
 import pandas as pd
@@ -79,10 +79,12 @@ class ProphetModel:
             raise ImportError("Prophet is required but not installed.")
 
         # Prophet expects columns named ``ds`` and ``y``
-        prophet_df = pd.DataFrame({
-            "ds": df.index,
-            "y": df[target_column].values,
-        })
+        prophet_df = pd.DataFrame(
+            {
+                "ds": df.index,
+                "y": df[target_column].values,
+            }
+        )
 
         self._model = Prophet(
             yearly_seasonality=self._yearly,
@@ -94,6 +96,7 @@ class ProphetModel:
 
         # Suppress Prophet's verbose logging
         import logging as _logging
+
         _logging.getLogger("prophet").setLevel(_logging.WARNING)
         _logging.getLogger("cmdstanpy").setLevel(_logging.WARNING)
 

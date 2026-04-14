@@ -99,9 +99,7 @@ class ControllerService:
 
         # ---- 2. Predict ----
         try:
-            recent = self._collector.get_latest_metrics(
-                n=self._config.prediction.lookback_steps
-            )
+            recent = self._collector.get_latest_metrics(n=self._config.prediction.lookback_steps)
             if recent.empty:
                 result["skipped"] = "No data in buffer"
                 return result

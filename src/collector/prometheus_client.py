@@ -5,10 +5,9 @@
 # server and returns structured metric data.
 # ============================================
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-import numpy as np
 import pandas as pd
 from prometheus_api_client import PrometheusConnect
 

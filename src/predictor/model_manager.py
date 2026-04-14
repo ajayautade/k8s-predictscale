@@ -233,9 +233,7 @@ class ModelManager:
         if os.path.exists(path):
             with open(path) as f:
                 data = json.load(f)
-            self._registry = [
-                ModelVersion(**entry) for entry in data
-            ]
+            self._registry = [ModelVersion(**entry) for entry in data]
             logger.info("model_registry_loaded", versions=len(self._registry))
         else:
             self._registry = []

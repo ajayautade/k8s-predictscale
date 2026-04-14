@@ -9,10 +9,10 @@ from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
-
 # ------------------------------------------------------------------
 # Health
 # ------------------------------------------------------------------
+
 
 class HealthResponse(BaseModel):
     status: str = Field(..., description="Overall health status")
@@ -24,6 +24,7 @@ class HealthResponse(BaseModel):
 # ------------------------------------------------------------------
 # Predictions
 # ------------------------------------------------------------------
+
 
 class PredictionResponse(BaseModel):
     predicted_values: List[float] = Field(..., description="Forecasted metric values")
@@ -52,6 +53,7 @@ class PredictionHistoryResponse(BaseModel):
 # ------------------------------------------------------------------
 # Scaling
 # ------------------------------------------------------------------
+
 
 class ScalingEventResponse(BaseModel):
     timestamp: str
@@ -83,6 +85,7 @@ class DryRunResponse(BaseModel):
 # Model
 # ------------------------------------------------------------------
 
+
 class ModelStatusResponse(BaseModel):
     lstm_trained: bool
     prophet_trained: bool
@@ -107,6 +110,7 @@ class RetrainResponse(BaseModel):
 # ------------------------------------------------------------------
 # Config
 # ------------------------------------------------------------------
+
 
 class ScalingConfigResponse(BaseModel):
     dry_run: bool
@@ -134,6 +138,7 @@ class ScalingConfigUpdate(BaseModel):
 # ------------------------------------------------------------------
 # System Status
 # ------------------------------------------------------------------
+
 
 class SystemStatusResponse(BaseModel):
     tick_count: int

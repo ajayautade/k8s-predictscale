@@ -87,8 +87,8 @@ class TestModelManager:
         from src.predictor.model_manager import ModelManager
 
         mgr = ModelManager(base_path=str(tmp_path / "models"))
-        v1 = mgr.create_version(metrics={"mae": 0.05})
-        v2 = mgr.create_version(metrics={"mae": 0.04})
+        mgr.create_version(metrics={"mae": 0.05})
+        mgr.create_version(metrics={"mae": 0.04})
 
         versions = mgr.list_versions()
         assert len(versions) == 2

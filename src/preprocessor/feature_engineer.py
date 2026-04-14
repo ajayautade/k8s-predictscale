@@ -89,9 +89,7 @@ class FeatureEngineer:
     # Feature generators
     # ------------------------------------------------------------------
 
-    def _add_rolling_features(
-        self, df: pd.DataFrame, columns: List[str]
-    ) -> pd.DataFrame:
+    def _add_rolling_features(self, df: pd.DataFrame, columns: List[str]) -> pd.DataFrame:
         """Add rolling mean and std for each window size."""
         for col in columns:
             for window in self.ROLLING_WINDOWS:
@@ -103,17 +101,13 @@ class FeatureEngineer:
                 )
         return df
 
-    def _add_rate_of_change(
-        self, df: pd.DataFrame, columns: List[str]
-    ) -> pd.DataFrame:
+    def _add_rate_of_change(self, df: pd.DataFrame, columns: List[str]) -> pd.DataFrame:
         """Add first-order difference (rate of change)."""
         for col in columns:
             df[f"{col}_rate_of_change"] = df[col].diff().fillna(0)
         return df
 
-    def _add_lag_features(
-        self, df: pd.DataFrame, columns: List[str]
-    ) -> pd.DataFrame:
+    def _add_lag_features(self, df: pd.DataFrame, columns: List[str]) -> pd.DataFrame:
         """Add lagged values at 15-min and 60-min offsets."""
         for col in columns:
             df[f"lag_{col}_15m"] = df[col].shift(15)

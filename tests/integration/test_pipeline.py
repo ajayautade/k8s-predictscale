@@ -9,8 +9,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.preprocessor.pipeline import PreprocessingPipeline
 from src.predictor.ensemble import EnsembleCombiner
+from src.preprocessor.pipeline import PreprocessingPipeline
 
 
 class TestPreprocessorPredictorIntegration:
@@ -25,9 +25,13 @@ class TestPreprocessorPredictorIntegration:
 
         return pd.DataFrame(
             {
-                "cpu_usage": 0.3 + 0.2 * np.sin(np.linspace(0, 8 * np.pi, n)) + np.random.normal(0, 0.02, n),
+                "cpu_usage": 0.3
+                + 0.2 * np.sin(np.linspace(0, 8 * np.pi, n))
+                + np.random.normal(0, 0.02, n),
                 "memory_usage": 400e6 + np.random.normal(0, 30e6, n),
-                "request_rate": 120 + 40 * np.sin(np.linspace(0, 8 * np.pi, n)) + np.random.normal(0, 5, n),
+                "request_rate": 120
+                + 40 * np.sin(np.linspace(0, 8 * np.pi, n))
+                + np.random.normal(0, 5, n),
                 "response_latency_p99": 0.05 + np.random.exponential(0.01, n),
                 "error_rate": np.random.poisson(0.3, n).astype(float),
             },

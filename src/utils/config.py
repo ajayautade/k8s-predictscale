@@ -10,6 +10,7 @@ from typing import List
 @dataclass
 class PrometheusConfig:
     """Prometheus connection settings."""
+
     url: str = os.getenv("PROMETHEUS_URL", "http://localhost:9090")
     scrape_interval: int = int(os.getenv("PROMETHEUS_SCRAPE_INTERVAL", "15"))
 
@@ -17,6 +18,7 @@ class PrometheusConfig:
 @dataclass
 class PredictionConfig:
     """Prediction engine settings."""
+
     interval: int = int(os.getenv("PREDICTION_INTERVAL", "60"))
     horizon: int = int(os.getenv("PREDICTION_HORIZON", "10"))
     model_path: str = os.getenv("MODEL_PATH", "./models")
@@ -31,6 +33,7 @@ class PredictionConfig:
 @dataclass
 class ScalingConfig:
     """Scaling controller settings."""
+
     dry_run: bool = os.getenv("DRY_RUN", "true").lower() == "true"
     target_namespace: str = os.getenv("TARGET_NAMESPACE", "default")
     target_deployment: str = os.getenv("TARGET_DEPLOYMENT", "sample-app")
@@ -46,6 +49,7 @@ class ScalingConfig:
 @dataclass
 class APIConfig:
     """API server settings."""
+
     host: str = os.getenv("API_HOST", "0.0.0.0")
     port: int = int(os.getenv("API_PORT", "8000"))
     log_level: str = os.getenv("LOG_LEVEL", "INFO")
@@ -54,6 +58,7 @@ class APIConfig:
 @dataclass
 class AlertConfig:
     """Alert & notification settings."""
+
     enabled: bool = os.getenv("ALERT_ENABLED", "false").lower() == "true"
     slack_webhook_url: str = os.getenv("SLACK_WEBHOOK_URL", "")
 
@@ -61,6 +66,7 @@ class AlertConfig:
 @dataclass
 class AppConfig:
     """Root application configuration."""
+
     prometheus: PrometheusConfig = field(default_factory=PrometheusConfig)
     prediction: PredictionConfig = field(default_factory=PredictionConfig)
     scaling: ScalingConfig = field(default_factory=ScalingConfig)

@@ -7,7 +7,7 @@
 # name, and collection metadata.
 # ============================================
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from typing import Dict, List
 
@@ -194,7 +194,4 @@ class MetricRegistry:
         Returns:
             ``{metric_name: resolved_promql}`` mapping.
         """
-        return {
-            name: self.resolve_query(name, namespace, deployment)
-            for name in self._metrics
-        }
+        return {name: self.resolve_query(name, namespace, deployment) for name in self._metrics}

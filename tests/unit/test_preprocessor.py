@@ -108,9 +108,7 @@ class TestNormalizer:
         norm = Normalizer(method="minmax")
         transformed = norm.fit_transform(small_metrics_df)
         restored = norm.inverse_transform(transformed)
-        pd.testing.assert_frame_equal(
-            small_metrics_df, restored, atol=1e-4
-        )
+        pd.testing.assert_frame_equal(small_metrics_df, restored, atol=1e-4)
 
     def test_inverse_transform_column(self, small_metrics_df):
         norm = Normalizer(method="minmax")
@@ -119,9 +117,7 @@ class TestNormalizer:
 
         # Normalize then inverse just one column
         transformed = norm.transform(small_metrics_df)
-        inversed = norm.inverse_transform_column(
-            transformed["cpu_usage"].values, "cpu_usage"
-        )
+        inversed = norm.inverse_transform_column(transformed["cpu_usage"].values, "cpu_usage")
         np.testing.assert_allclose(original, inversed, atol=1e-4)
 
     def test_fit_required_before_transform(self, small_metrics_df):
@@ -156,7 +152,7 @@ class TestPreprocessingPipeline:
         assert X.ndim == 3
         assert y.ndim == 2
         assert X.shape[1] == 30  # lookback
-        assert y.shape[1] == 5   # forecast
+        assert y.shape[1] == 5  # forecast
 
     def test_transform_single_sample(self, sample_metrics_df):
         pipeline = PreprocessingPipeline(

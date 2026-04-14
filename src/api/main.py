@@ -13,10 +13,10 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from prometheus_client import (
+    CONTENT_TYPE_LATEST,
     Counter,
     Gauge,
     generate_latest,
-    CONTENT_TYPE_LATEST,
 )
 from starlette.responses import Response
 
@@ -71,7 +71,6 @@ RECOMMENDED_REPLICAS = Gauge(
 
 def _tick_job():
     """Periodic control-loop invocation — runs in a background thread."""
-    global _controller
     if _controller is None:
         return
 
@@ -92,6 +91,7 @@ def _tick_job():
 # ------------------------------------------------------------------
 # Lifespan
 # ------------------------------------------------------------------
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

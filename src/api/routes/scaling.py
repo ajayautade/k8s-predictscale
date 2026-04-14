@@ -9,8 +9,8 @@ from src.api.schemas import (
     DryRunResponse,
     ScalingConfigResponse,
     ScalingConfigUpdate,
-    ScalingEventsListResponse,
     ScalingEventResponse,
+    ScalingEventsListResponse,
 )
 
 router = APIRouter(prefix="/scaling", tags=["scaling"])

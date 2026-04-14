@@ -4,8 +4,6 @@
 
 import time
 
-import numpy as np
-import pytest
 
 from src.controller.decision_engine import (
     DecisionEngine,

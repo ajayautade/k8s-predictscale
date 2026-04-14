@@ -6,7 +6,7 @@
 # windowed sequences for LSTM input.
 # ============================================
 
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, Tuple
 
 import numpy as np
 import pandas as pd
@@ -62,9 +62,7 @@ class PreprocessingPipeline:
     # Full pipeline
     # ------------------------------------------------------------------
 
-    def fit_transform(
-        self, df: pd.DataFrame
-    ) -> Tuple[np.ndarray, np.ndarray]:
+    def fit_transform(self, df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
         """Fit the pipeline on *df* and return training arrays.
 
         Args:
@@ -117,7 +115,7 @@ class PreprocessingPipeline:
             processed = pd.concat([padding, processed], ignore_index=True)
 
         # Return the latest window as a single sample
-        values = processed.values[-self._lookback:]
+        values = processed.values[-self._lookback :]
         return values.reshape(1, self._lookback, -1)
 
     # ------------------------------------------------------------------
@@ -145,9 +143,7 @@ class PreprocessingPipeline:
 
         return normalized
 
-    def _create_sequences(
-        self, df: pd.DataFrame
-    ) -> Tuple[np.ndarray, np.ndarray]:
+    def _create_sequences(self, df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
         """Slice a DataFrame into overlapping (X, y) windows.
 
         Args:
@@ -157,16 +153,18 @@ class PreprocessingPipeline:
             ``(X, y)`` numpy arrays.
         """
         values = df.values
-        target_idx = list(df.columns).index(self._target_col) if self._target_col in df.columns else 0
+        target_idx = (
+            list(df.columns).index(self._target_col) if self._target_col in df.columns else 0
+        )
 
         X_list, y_list = [], []
         total = len(values) - self._lookback - self._forecast + 1
 
         for i in range(total):
-            X_list.append(values[i: i + self._lookback])
+            X_list.append(values[i : i + self._lookback])
             y_list.append(
                 values[
-                    i + self._lookback: i + self._lookback + self._forecast,
+                    i + self._lookback : i + self._lookback + self._forecast,
                     target_idx,
                 ]
             )

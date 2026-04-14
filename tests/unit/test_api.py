@@ -10,6 +10,7 @@ from fastapi.testclient import TestClient
 def client():
     """Create a FastAPI test client."""
     from src.api.main import app
+
     return TestClient(app)
 
 
@@ -20,6 +21,7 @@ class TestRootEndpoint:
         data = response.json()
         assert data["service"] == "K8s PredictScale"
         assert "version" in data
+
 
 class TestHealthEndpoint:
     def test_health_returns_status(self, client):

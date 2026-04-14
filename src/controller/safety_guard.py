@@ -113,7 +113,7 @@ class SafetyGuard:
         self._event_history.append(decision.to_dict())
 
         if len(self._event_history) > self._max_history:
-            self._event_history = self._event_history[-self._max_history:]
+            self._event_history = self._event_history[-self._max_history :]
 
         logger.info(
             "scaling_event_recorded",

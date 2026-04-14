@@ -2,7 +2,7 @@
 # K8s PredictScale - Health Routes
 # ============================================
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 
 from src.api.schemas import HealthResponse
 

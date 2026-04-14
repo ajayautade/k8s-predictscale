@@ -6,7 +6,7 @@
 # based on recent prediction accuracy.
 # ============================================
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
 import numpy as np
@@ -106,8 +106,7 @@ class EnsembleCombiner:
         """
         if lstm_prediction is not None and prophet_prediction is not None:
             blended = (
-                self._lstm_weight * lstm_prediction
-                + self._prophet_weight * prophet_prediction
+                self._lstm_weight * lstm_prediction + self._prophet_weight * prophet_prediction
             )
         elif lstm_prediction is not None:
             blended = lstm_prediction
@@ -171,13 +170,13 @@ class EnsembleCombiner:
             mae = float(np.mean(np.abs(actual - lstm_pred)))
             self._lstm_errors.append(mae)
             if len(self._lstm_errors) > self._confidence_window:
-                self._lstm_errors = self._lstm_errors[-self._confidence_window:]
+                self._lstm_errors = self._lstm_errors[-self._confidence_window :]
 
         if prophet_pred is not None:
             mae = float(np.mean(np.abs(actual - prophet_pred)))
             self._prophet_errors.append(mae)
             if len(self._prophet_errors) > self._confidence_window:
-                self._prophet_errors = self._prophet_errors[-self._confidence_window:]
+                self._prophet_errors = self._prophet_errors[-self._confidence_window :]
 
         if self._lstm_errors and self._prophet_errors:
             lstm_mae = np.mean(self._lstm_errors)
@@ -239,6 +238,10 @@ class EnsembleCombiner:
             "prophet_weight": round(self._prophet_weight, 4),
             "lstm_error_history_size": len(self._lstm_errors),
             "prophet_error_history_size": len(self._prophet_errors),
-            "avg_lstm_mae": round(float(np.mean(self._lstm_errors)), 6) if self._lstm_errors else None,
-            "avg_prophet_mae": round(float(np.mean(self._prophet_errors)), 6) if self._prophet_errors else None,
+            "avg_lstm_mae": (
+                round(float(np.mean(self._lstm_errors)), 6) if self._lstm_errors else None
+            ),
+            "avg_prophet_mae": (
+                round(float(np.mean(self._prophet_errors)), 6) if self._prophet_errors else None
+            ),
         }
